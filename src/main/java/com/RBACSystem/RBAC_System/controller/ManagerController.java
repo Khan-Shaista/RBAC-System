@@ -1,0 +1,67 @@
+package com.RBACSystem.RBAC_System.controller;
+
+import com.RBACSystem.RBAC_System.model.Users;
+import com.RBACSystem.RBAC_System.service.ManagerService;
+import com.RBACSystem.RBAC_System.service.adminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@PreAuthorize("hasRole('MANAGER')")
+@RestController
+@RequestMapping("/Manager")
+public class ManagerController {
+
+        @Autowired
+        private ManagerService service;
+
+        @Autowired
+        AuthenticationManager authenticationManager;
+
+
+
+        @GetMapping("/cashier")
+        public ResponseEntity<List<Users>> getAllManagers() {
+            return ResponseEntity.ok(service.getAllCashier());
+        }
+
+        @PostMapping("/cashier")
+        public ResponseEntity<?> addcashier(@RequestBody Users user) {
+            try {
+                Users savedUser = service.addcashier(user);
+
+
+                return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        @PutMapping("/cashier/{id}")
+        public ResponseEntity<String> updatecashier(@PathVariable Long id, @RequestBody Users user) {
+            try {
+                Users updated = service.updatecashier(id, user);
+                if (updated != null) {
+                    return ResponseEntity.ok("updated");
+                }
+                return ResponseEntity.badRequest().body("Failed to update");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+            }
+        }
+
+        @DeleteMapping("/cashier/{id}")
+        public ResponseEntity<String> deletecashier(@PathVariable Long id) {
+            Users user = service.getcashier(id);
+            if (user != null) {
+                service.deletecashier(id);
+                return ResponseEntity.ok("Deleted");
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
+        }
+}
