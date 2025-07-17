@@ -2,17 +2,14 @@ package com.RBACSystem.RBAC_System.controller;
 
 import com.RBACSystem.RBAC_System.model.Users;
 import com.RBACSystem.RBAC_System.service.ManagerService;
-import com.RBACSystem.RBAC_System.service.adminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@PreAuthorize("hasRole('MANAGER')")
 @RestController
 @RequestMapping("/Manager")
 public class ManagerController {

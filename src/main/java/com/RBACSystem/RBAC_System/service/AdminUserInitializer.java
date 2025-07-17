@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdminUserInitializer {
 
+    // Remove it once the user registration API is implemented.
     @Bean
     public CommandLineRunner loadAdmin(UsersDetailRepo userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
@@ -18,7 +19,7 @@ public class AdminUserInitializer {
                 Users admin = new Users();
                 admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("admin123"));
-                admin.setRole(Role.ROLE_ADMIN);
+                admin.setRole(Role.ADMIN);
                 userRepository.save(admin);
                 System.out.println("Admin user created");
             } else System.out.println(" Admin user already exists");

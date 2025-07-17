@@ -18,7 +18,7 @@ public class AuthController {
     @Autowired
     JWTUtil jwtUtil;
 
-    @PostMapping({"/authenticate"})
+    @PostMapping("/authenticate")
     public String generateToken(@RequestBody AuthRequest authRequest){
         try {
             authenticationManager.authenticate(
