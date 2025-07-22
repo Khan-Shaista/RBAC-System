@@ -25,15 +25,12 @@ public class adminController {
     AuthenticationManager authenticationManager;
 
 
-
     @GetMapping("/manager")
-  //  @PreAuthorize("hasAuthority('MANAGER_READ')")
     public ResponseEntity<List<Users>> getAllManagers() {
         return ResponseEntity.ok(service.getAllManagers());
     }
 
     @PostMapping("/manager")
-  //  @PreAuthorize("hasAuthority('MANAGER_WRITE')")
     public ResponseEntity<?> addManager(@RequestBody Users user) {
         try {
             Users savedUser = service.addManager(user);
@@ -47,7 +44,6 @@ public class adminController {
 
 
     @PutMapping("/manager/{id}")
-  //  @PreAuthorize("hasAuthority('MANAGER_UPDATE')")
     public ResponseEntity<String> updateManager(@PathVariable Long id, @RequestBody Users user) {
         try {
             Users updated = service.updateManager(id, user);
@@ -61,7 +57,6 @@ public class adminController {
     }
 
     @DeleteMapping("/manager/{id}")
-//    @PreAuthorize("hasAuthority('MANAGER_DELETE')")
     public ResponseEntity<String> deleteManager(@PathVariable Long id) {
         Users user = service.getManager(id);
         if (user != null) {
@@ -70,10 +65,6 @@ public class adminController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
     }
-
-
-
-
 
 
 }

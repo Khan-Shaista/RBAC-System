@@ -1,112 +1,42 @@
+
+
 package com.RBACSystem.RBAC_System.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Entity
+@Data // After using Lombok, we don't need to write explicit getters, setters, or a parameterized constructor.
+@NoArgsConstructor
 public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Users(Long id, String username, String password, Role role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
-    public Users() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-
-//        authorities.add(new SimpleGrantedAuthority(role.name()));
-//
-//
-//        Set<SimpleGrantedAuthority> permissionAuthorities = role.getPermissions().stream().
-//                map(permissions -> new SimpleGrantedAuthority(permissions.name()))
-//                        .collect(Collectors.toSet());
-//        authorities.addAll(permissionAuthorities);
-
-        authorities.add(new SimpleGrantedAuthority(role.name())); // ROLE_ADMIN
-        authorities.addAll(role.getPermissions().stream()
-                .map(p -> new SimpleGrantedAuthority(p.name()))
-                .collect(Collectors.toSet()));
-
-
-        return authorities;
-
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 }
