@@ -2,6 +2,8 @@
 
 package com.RBACSystem.RBAC_System.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,23 +18,34 @@ import java.util.List;
 @Entity
 @Data // After using Lombok, we don't need to write explicit getters, setters, or a parameterized constructor.
 @NoArgsConstructor
-public class Users implements UserDetails {
+public class Users2 implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
+
+    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ManyToOne
+    @JoinColumn(name = "parentId")
+    @JsonIgnoreProperties({"createdBy","username", "password", "role", "parentId", "enabled", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+    private Users2 createdBy;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
+
     }
+
+
 
 
     @Override public boolean isAccountNonExpired() { return true; }

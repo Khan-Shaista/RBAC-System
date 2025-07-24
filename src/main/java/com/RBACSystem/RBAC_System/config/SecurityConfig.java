@@ -30,7 +30,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authenticate").permitAll()
-                        .requestMatchers("/admin/manager").hasRole("ADMIN")
+                        .requestMatchers("/admin/manager").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/Manager/cashier").hasAuthority("ROLE_MANAGER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

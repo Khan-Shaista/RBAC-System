@@ -1,6 +1,6 @@
 package com.RBACSystem.RBAC_System.controller;
 
-import com.RBACSystem.RBAC_System.model.Users;
+import com.RBACSystem.RBAC_System.model.Users2;
 import com.RBACSystem.RBAC_System.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,14 +23,15 @@ public class ManagerController {
 
 
         @GetMapping("/cashier")
-        public ResponseEntity<List<Users>> getAllManagers() {
+        public ResponseEntity<List<Users2>> getAllCashier() {
+
             return ResponseEntity.ok(service.getAllCashier());
         }
 
         @PostMapping("/cashier")
-        public ResponseEntity<?> addcashier(@RequestBody Users user) {
+        public ResponseEntity<?> addcashier(@RequestBody Users2 user) {
             try {
-                Users savedUser = service.addcashier(user);
+                Users2 savedUser = service.addcashier(user);
 
 
                 return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -40,9 +41,9 @@ public class ManagerController {
         }
 
         @PutMapping("/cashier/{id}")
-        public ResponseEntity<String> updatecashier(@PathVariable Long id, @RequestBody Users user) {
+        public ResponseEntity<String> updatecashier(@PathVariable Long id, @RequestBody Users2 user) {
             try {
-                Users updated = service.updatecashier(id, user);
+                Users2 updated = service.updatecashier(id, user);
                 if (updated != null) {
                     return ResponseEntity.ok("updated");
                 }
@@ -54,7 +55,7 @@ public class ManagerController {
 
         @DeleteMapping("/cashier/{id}")
         public ResponseEntity<String> deletecashier(@PathVariable Long id) {
-            Users user = service.getcashier(id);
+            Users2 user = service.getcashier(id);
             if (user != null) {
                 service.deletecashier(id);
                 return ResponseEntity.ok("Deleted");
