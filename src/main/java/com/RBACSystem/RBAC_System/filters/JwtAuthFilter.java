@@ -33,10 +33,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String token = null, username = null;
 
+        String path = request.getRequestURI();
+
+
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
             username = jwtUtil.extractUsername(token);
         }
+
+        // allow without token
+//        if (path.equals("/admin/manager") || path.equals("/Manager/cashier") ) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
+
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -51,3 +62,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+

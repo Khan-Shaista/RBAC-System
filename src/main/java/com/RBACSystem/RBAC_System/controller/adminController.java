@@ -6,16 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@CrossOrigin
 @RestController
+//@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/admin")
 public class adminController {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private adminService service;
@@ -25,8 +31,6 @@ public class adminController {
 
 
     @GetMapping("/manager")
-
-
     public ResponseEntity<List<Users2>> getAllManagers() {
 
         return ResponseEntity.ok(service.getAllManagers());
@@ -49,14 +53,17 @@ public class adminController {
     @PutMapping("/manager/{id}")
     public ResponseEntity<String> updateManager(@PathVariable Long id, @RequestBody Users2 user) {
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             Users2 updated = service.updateManager(id, user);
             if (updated != null) {
                 return ResponseEntity.ok("updated");
             }
             return ResponseEntity.badRequest().body("Failed to update");
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
+
     }
 
     @DeleteMapping("/manager/{id}")

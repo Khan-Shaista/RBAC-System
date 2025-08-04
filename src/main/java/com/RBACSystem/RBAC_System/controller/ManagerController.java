@@ -5,13 +5,18 @@ import com.RBACSystem.RBAC_System.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
+
 @RestController
 @RequestMapping("/Manager")
+//@PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+
 public class ManagerController {
 
         @Autowired

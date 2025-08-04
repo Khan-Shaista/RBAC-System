@@ -1,8 +1,6 @@
 
 
 package com.RBACSystem.RBAC_System.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,11 +24,14 @@ public class Users2 implements UserDetails {
 
     private String username;
 
-    @JsonIgnore
+
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+//    @Enumerated(EnumType.STRING)
+//    private Superadmin superadmin;
 
     @ManyToOne
     @JoinColumn(name = "parentId")

@@ -22,11 +22,16 @@ public class ManagerService {
 
     public List<Users2> getAllCashier() {
 
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        Users2 creator = repo.findByUsername(currentUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("Creator not found"));
+//        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+//        Users2 creator = repo.findByUsername(currentUsername)
+//                .orElseThrow(() -> new UsernameNotFoundException("Creator not found"));
+//
+//        return repo.findByRoleAndCreatedBy(Role.ROLE_CASHIER, creator);
 
-        return repo.findByRoleAndCreatedBy(Role.ROLE_CASHIER, creator);
+
+            return repo.findByRole(Role.ROLE_CASHIER);
+
+
     }
 
     public Users2 addcashier(Users2 user) {

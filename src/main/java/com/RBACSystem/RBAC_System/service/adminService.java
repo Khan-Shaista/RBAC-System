@@ -22,11 +22,14 @@ public class adminService {
 
 
     public List<Users2> getAllManagers() {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        Users2 creator = repo.findByUsername(currentUsername)
-                .orElseThrow(() -> new UsernameNotFoundException("Creator not found"));
+//        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+//        Users2 creator = repo.findByUsername(currentUsername)
+//                .orElseThrow(() -> new UsernameNotFoundException("Creator not found"));
+//
+//        return repo.findByRoleAndCreatedBy(Role.ROLE_MANAGER, creator);
 
-        return repo.findByRoleAndCreatedBy(Role.ROLE_MANAGER, creator);
+            return repo.findByRole(Role.ROLE_MANAGER);
+
     }
 
 
@@ -76,6 +79,7 @@ public class adminService {
     public void deleteManager(Long id) {
         repo.deleteById(id);
     }
+
 
 
 }
