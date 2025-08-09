@@ -62,24 +62,28 @@ public class adminService {
 //    }
 
 
-//    Checks if the manager (user) exists before updating.
-    public Users2 updateManager(Long id, Users2 updatedUser) {
-        Users2 existingUser = repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Manager with ID " + id + " not found"));
 
-        existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setPassword(updatedUser.getPassword()); // ideally encode password if changed
-        existingUser.setRole(updatedUser.getRole());
+public Users2 updateManager(Long id, Users2 updatedUser) {
+    Users2 existingUser = repo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Manager with ID " + id + " not found"));
 
-        return repo.save(existingUser);
+    existingUser.setUsername(updatedUser.getUsername());
+    existingUser.setRole(updatedUser.getRole());
+
+    // ✅ Encode only if password is provided
+    if (updatedUser.getPassword() != null && !updatedUser.getPassword().isBlank()) {
+        String encoded = passwordEncoder.encode(updatedUser.getPassword());
+        existingUser.setPassword(encoded);
     }
 
+    // ✅ 🪵 DEBUG PRINT - Check what is being saved
+    System.out.println("Saving password: " + existingUser.getPassword());
 
+    return repo.save(existingUser);
+}
 
     public void deleteManager(Long id) {
         repo.deleteById(id);
     }
-
-
 
 }

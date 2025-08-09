@@ -4,6 +4,7 @@ package com.RBACSystem.RBAC_System.config;
 import com.RBACSystem.RBAC_System.filters.JwtAuthFilter;
 import com.RBACSystem.RBAC_System.service.CustomUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,14 +35,15 @@ public class SecurityConfig {
                 .cors(cors -> cors.configure(http))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authenticate").permitAll()
-                        .requestMatchers("/admin/manager").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/Manager/cashier").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN")
-                        .requestMatchers("/Cashier/product").hasAnyAuthority("ROLE_CASHIER")
+                        .requestMatchers("/admin/manager/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/Manager/cashier/**").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN")
+                        .requestMatchers("/Cashier/product/**").hasAnyAuthority("ROLE_CASHIER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -60,4 +62,5 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(provider);
     }
+
 }

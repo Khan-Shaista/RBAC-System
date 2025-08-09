@@ -34,6 +34,7 @@ public class ManagerService {
 
     }
 
+
     public Users2 addcashier(Users2 user) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -50,9 +51,11 @@ public class ManagerService {
                 .orElseThrow(() -> new RuntimeException("Cashier with ID " + id + " not found"));
 
         existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setPassword(updatedUser.getPassword()); // ideally encode password if changed
         existingUser.setRole(updatedUser.getRole());
-
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isBlank()) {
+            String encoded = passwordEncoder.encode(updatedUser.getPassword());
+            existingUser.setPassword(encoded);
+        }
         return repo.save(existingUser);
     }
 

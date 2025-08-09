@@ -2,6 +2,7 @@ package com.RBACSystem.RBAC_System.controller;
 
 
 import com.RBACSystem.RBAC_System.model.Product;
+import com.RBACSystem.RBAC_System.model.Users2;
 import com.RBACSystem.RBAC_System.service.CashierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ public class CashierController {
     }
 
 
+
     @PostMapping("/product")
     public ResponseEntity<?> addProduct(@RequestBody Product prod) {
         try {
@@ -39,6 +41,20 @@ public class CashierController {
             return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/product/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+        try {
+            Product prod = service.getProduct(id);
+            if (prod != null) {
+                return ResponseEntity.ok(prod);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

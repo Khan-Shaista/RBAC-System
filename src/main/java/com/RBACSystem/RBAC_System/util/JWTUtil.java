@@ -28,12 +28,12 @@ public class JWTUtil {
         Users2 user = repo.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // ✅ convert enum to string like "ROLE_ADMIN"
+        // convert enum to string like "ROLE_ADMIN"
         String roleName = user.getRole().name();
 
         return Jwts.builder()
                 .setSubject(username)
-                .claim("authorities", List.of(roleName)) // ✅ now a clean string array
+                .claim("authorities", List.of(roleName)) //  now a clean string array
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(KEY, SignatureAlgorithm.HS256)

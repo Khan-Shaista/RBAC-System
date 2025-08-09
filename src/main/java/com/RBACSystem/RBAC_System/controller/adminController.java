@@ -36,6 +36,20 @@ public class adminController {
         return ResponseEntity.ok(service.getAllManagers());
     }
 
+    @GetMapping("/manager/{id}")
+    public ResponseEntity<Users2> getManager(@PathVariable Long id) {
+        try {
+            Users2 manager = service.getManager(id); // Make sure service method exists
+            if (manager != null) {
+                return ResponseEntity.ok(manager);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
     @PostMapping("/manager")
     public ResponseEntity<?> addManager(@RequestBody Users2 user) {
@@ -52,8 +66,8 @@ public class adminController {
 
     @PutMapping("/manager/{id}")
     public ResponseEntity<String> updateManager(@PathVariable Long id, @RequestBody Users2 user) {
+        System.out.println("Inside updateManager");
         try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             Users2 updated = service.updateManager(id, user);
             if (updated != null) {
                 return ResponseEntity.ok("updated");

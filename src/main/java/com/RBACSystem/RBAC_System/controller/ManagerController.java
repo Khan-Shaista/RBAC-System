@@ -33,6 +33,20 @@ public class ManagerController {
             return ResponseEntity.ok(service.getAllCashier());
         }
 
+    @GetMapping("/cashier/{id}")
+    public ResponseEntity<Users2> getcashier(@PathVariable Long id) {
+        try {
+            Users2 cashier = service.getcashier(id); // Make sure service method exists
+            if (cashier != null) {
+                return ResponseEntity.ok(cashier);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
         @PostMapping("/cashier")
         public ResponseEntity<?> addcashier(@RequestBody Users2 user) {
             try {
